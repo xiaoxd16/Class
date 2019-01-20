@@ -17,7 +17,7 @@ from django.conf.urls import include,url
 from django.contrib import admin
 from .views import *
 urlpatterns = [
-	url(r'^bind/',PersonBind.as_view()),
+	url(r'^bind',PersonBind.as_view()),
 	url(r'^class/all',AllClassInfo.as_view()),
 	url(r'^class/my',MyClassInfo.as_view()),
 	url(r'^info',PersonInfo.as_view()),
