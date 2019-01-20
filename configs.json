@@ -1,0 +1,14 @@
+{
+  "SECRET_KEY": "ThisIsARandomStringWithLength=50!-----------------",
+  "DEBUG": true,
+  "IGNORE_WECHAT_SIGNATURE": true,
+  "WECHAT_TOKEN": "ThisIsAWeChatToken",
+  "WECHAT_APPID": "wx49acd0c4ad34ce8e",
+  "WECHAT_SECRET": "eb8a972ff9cb297f1a7a3aee70ee9928",
+  "DB_NAME": "wechat_class",
+  "DB_USER": "root",
+  "DB_PASS": "123456",
+  "DB_HOST": "127.0.0.1",
+  "DB_PORT": "3306",
+  "SITE_DOMAIN": "http://2240y0r795.iask.in/"
+}
