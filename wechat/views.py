@@ -13,16 +13,15 @@ class LoginView(APIView):
 		self.check_input('code')
 		url = "https://api.weixin.qq.com/sns/jscode2session"
 		CODE = self.input['code']
-		input_data = {
+		data = {
 			'appid': WECHAT_APPID,
             'secret': WECHAT_SECRET,
             'js_code': CODE,
             'grant_type': 'authorization_code'
 		}
-		input_data = urllib.urlencode(input_data)
-		req = urllib.request.Request(url='%s%s%s'%(url,'?',input_data))
+		data = urllib.parse.urlencode(data).encode('utf-8')
+		req = urllib.request.Request(url=url,data = data))
 		res = urllib.request.urlopen(req)
 		res = res.read()
 		print(res)
 		return res
-		
