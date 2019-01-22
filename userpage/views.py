@@ -10,7 +10,7 @@ class PersonBind(APIView):
 		if person is not None:
 			raise LogicError('Already Bind')
 		t = Person.insertPerson(self.input['open_id'])
-		if not t:
+		if t is None:
 			raise LogicError('Failed to bind')
 
 
@@ -20,24 +20,37 @@ class PersonInfo(APIView):
 		person = Person.selectByOpenId(open_id=self.input['open_id'])
 		if person is None:
 			raise LogicError('Not Bind Yet!')
+		phones_data = Phone.selectPhoneByPerson(person)
+		places_data = Place.selectPlaceByPerson(person)
+		emails_data = Email.selectPlaceByPerson(person)
+		
+		phones = {}
+		places = {}
+		emails = {}
+		for i in phones_data:
+			phones[i.id] = i.phone
+		for i in places_data:
+			places[i.id] = i.place
+		for i in emails_data:
+			emails[i.id] = i.email
+		
 		output_info = {
 			'id': person.id,
 			'open_id': person.open_id,
-			'phone': person.phone,
-			'email': person.email,
+			'phones': phones,
+			'email': emails,
+			'place': places,
 			'qq': person.qq,
 			'description': person.description,
-			'place': person.place
 		}
 		return output_info
 	
 	def post(self):
-		self.check_input('open_id', 'name', 'phone', 'email', 'place', 'qq', 'description')
+		self.check_input('open_id', 'name', 'qq', 'description')
 		person = Person.selectByOpenId(open_id=self.input['open_id'])
 		if person is None:
 			raise LogicError('Not Bind Yet!')
-		t = Person.updataPerson(open_id=self.input['open_id'], name=self.input['name'], phone=self.input['phone'],
-		                        email=self.input['email'], place=self.input['place'], qq=self.input['qq'],
+		t = Person.updataPerson(open_id=self.input['open_id'], name=self.input['name'], qq=self.input['qq'],
 		                        description=self.input['description'])
 		if not t:
 			raise LogicError("Update Infomation Failed")
@@ -50,12 +63,13 @@ class AllClassInfo(APIView):
 		for i in all_class:
 			output_list.append(
 				{
-					'id':i.id,
-					'name':i.name,
+					'id': i.id,
+					'name': i.name,
 				}
 			)
-		return  output_list
-	
+		return output_list
+
+
 class MyClassInfo(APIView):
 	def get(self):
 		self.check_input('open_id')
@@ -68,12 +82,9 @@ class MyClassInfo(APIView):
 			for i in class_[0].members:
 				output_info.append(
 					{
-						'id':i.id,
-						'name':i.name,
-						'phone':i.phone,
-						'place':i.place,
-						'email':i.email,
-						'qq':i.qq
+						'id': i.id,
+						'name': i.name,
+						'description': i.description
 					}
 				)
 			return output_info
@@ -82,31 +93,51 @@ class MyClassInfo(APIView):
 			for i in class_:
 				output_info.append(
 					{
-						'id':i.id,
-						'name':i.name
+						'id': i.id,
+						'name': i.name,
+						'description': i.description
 					}
 				)
 			return output_info
 
+
 class CreateClass(APIView):
 	def post(self):
-		self.check_input('open_id','name')
+		self.check_input('open_id', 'name')
 		person = Person.selectByOpenId(self.input['open_id'])
-		t,id = Class.insertClass(self.input['name'])
-		if not t:
+		class_ = Class.insertClass(self.input['name'])
+		if class_ is None:
 			raise LogicError("Failed to insert class!")
-		t = Class.insertPerson(id,person)
-		if not t:
+		class_ = class_.insertPerson(id, person)
+		if class_ is None:
 			raise LogicError("Failed to insert person to class!")
+		return {
+			'id': class_.id,
+			'name': class_.name,
+			'token': class_.token
+		}
+
 
 class ExitClass(APIView):
-	def post(self):
-		self.check_input('open_id','id')#id for class.id
-		t = Class.removePerson(self.input['id'],self.input['open_id'])
-		if not t:
-			person = Person.selectByOpenId(self.input['open_id'])
-			class_ = Class.selectById(self.input['id'])
-			raise  LogicError("Failed to remove %s from %s" % (person.name,class_.name ))
-		
-		
+	def get(self):
+		self.check_input('open_id', 'id')  # id for class.id
+		class_ = Class.selectById(self.input['id'])
+		if class_ is None:
+			raise LogicError("No Such Class")
+		class_ = class_.removePerson(self.input['open_id'])
+		if class_ is None:
+			raise LogicError("Remove Failed")
+		return
+
+
+class InsertClass(APIView):
+	def get(self):
+		self.check_input('open_id', 'id')
+		class_ = Class.selectById(self.input['id'])
+		if class_ is None:
+			raise LogicError("No Such Class!")
+		class_ = class_.insertPerson(self.input['open_id'])
+		if class_ is None:
+			raise LogicError('Add To Class Failed!')
+
 # Create your views here.
