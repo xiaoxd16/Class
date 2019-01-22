@@ -1,6 +1,11 @@
 import json
 import requests
 
+CONFIGS = json.loads(open('configs.json').read())
+
+APPID = CONFIGS['WECHAT_APPID']
+SECRET = CONFIGS['WECHAT_SECRET']
+
 
 class OpenidUtils(object):
 	
