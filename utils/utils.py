@@ -22,7 +22,7 @@ class OpenidUtils(object):
 		r = r.json()
 		print(r)
 		if 'openid' in r:
-			openid = r.json()['openid']
+			openid = r['openid']
 		else:
 			openid = None
 		return openid
