@@ -1,6 +1,7 @@
 from django.utils import timezone
 from codex.baseview import *
-import urllib,json
+from urllib import parse,request
+import json
 
 
 CONFIGS = json.loads(open('configs.json').read())
@@ -19,9 +20,9 @@ class LoginView(APIView):
             'js_code': CODE,
             'grant_type': 'authorization_code'
 		}
-		data = urllib.parse.urlencode(data).encode('utf-8')
-		req = urllib.request.Request(url=url,data = data)
-		res = urllib.request.urlopen(req)
+		data = parse.urlencode(data).encode('utf-8')
+		req = request.Request(url=url,data = data)
+		res = request.urlopen(req)
 		res = res.read()
 		print(res)
 		return res
