@@ -17,4 +17,6 @@ class LoginView(APIView):
 		CODE = self.input['code']
 		openid_util = OpenidUtils(CODE)
 		openid = openid_util.get_openid()
+		if openid is None:
+			raise LogicError("Get Open Id Failed")
 		return openid
