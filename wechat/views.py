@@ -20,7 +20,7 @@ class LoginView(APIView):
             'grant_type': 'authorization_code'
 		}
 		data = urllib.parse.urlencode(data).encode('utf-8')
-		req = urllib.request.Request(url=url,data = data))
+		req = urllib.request.Request(url=url,data = data)
 		res = urllib.request.urlopen(req)
 		res = res.read()
 		print(res)
