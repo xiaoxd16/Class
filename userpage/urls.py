@@ -22,5 +22,6 @@ urlpatterns = [
 	url(r'^class/my?$',MyClassInfo.as_view()),
 	url(r'^info?$',PersonInfo.as_view()),
 	url(r'^class/create?$',CreateClass.as_view()),
-	url(r'^class/exit?$',ExitClass.as_view())
+	url(r'^class/exit?$',ExitClass.as_view()),
+	url(r'^class/insert?$',InsertClass.as_view()),
 ]
