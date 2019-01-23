@@ -8,7 +8,7 @@ class PersonBind(APIView):
 		self.check_input('open_id')
 		person = Person.selectByOpenId(self.input['open_id'])
 		if person is not None:
-			raise LogicError('Already Bind')
+			return
 		t = Person.insertPerson(self.input['open_id'])
 		if t is None:
 			raise LogicError('Failed to bind')
