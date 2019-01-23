@@ -36,10 +36,10 @@ class PersonInfo(APIView):
 		
 		output_info = {
 			'id': person.id,
-			'open_id': person.open_id,
+			'name':person.name,
 			'phones': phones,
-			'email': emails,
-			'place': places,
+			'emails': emails,
+			'places': places,
 			'qq': person.qq,
 			'description': person.description,
 		}
