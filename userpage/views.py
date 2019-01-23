@@ -22,7 +22,7 @@ class PersonInfo(APIView):
 			raise LogicError('Not Bind Yet!')
 		phones_data = Phone.selectPhoneByPerson(person)
 		places_data = Place.selectPlaceByPerson(person)
-		emails_data = Email.selectPlaceByPerson(person)
+		emails_data = Email.selectEmailByPerson(person)
 		
 		phones = {}
 		places = {}
