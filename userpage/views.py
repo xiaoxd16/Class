@@ -36,7 +36,7 @@ class PersonInfo(APIView):
 		
 		output_info = {
 			'id': person.id,
-			'name':person.name,
+			'name': person.name,
 			'phones': phones,
 			'emails': emails,
 			'places': places,
@@ -56,7 +56,7 @@ class PersonInfo(APIView):
 			raise LogicError("Update Infomation Failed")
 
 
-class AllClassInfo(APIView):
+class AllClass(APIView):
 	def get(self):
 		output_list = []
 		all_class = Class.objects.all()
@@ -70,35 +70,37 @@ class AllClassInfo(APIView):
 		return output_list
 
 
-class MyClassInfo(APIView):
+class MyClass(APIView):
 	def get(self):
 		self.check_input('open_id')
 		person = Person.selectByOpenId(self.input['open_id'])
 		class_ = person.class_set.all()
-		if len(class_) == 0:
-			return
-		elif len(class_) == 1:
-			output_info = []
-			for i in class_[0].members:
-				output_info.append(
-					{
-						'id': i.id,
-						'name': i.name,
-						'description': i.description
-					}
-				)
-			return output_info
-		else:
-			output_info = []
-			for i in class_:
-				output_info.append(
-					{
-						'id': i.id,
-						'name': i.name,
-						'description': i.description
-					}
-				)
-			return output_info
+		output_info = []
+		for i in class_:
+			output_info.append(
+				{
+					'id': i.id,
+					'name': i.name
+				}
+			)
+		return output_info
+
+
+class ClassInfo(APIView):
+	def get(self):
+		self.check_input('id')
+		class_ = Class.selectById(self.input['id'])
+		output_info = []
+		for i in class_.members:
+			output_info.append(
+				{
+					'id': i.id,
+					'qq': i.qq,
+					'description': i.description,
+					'name': i.name
+				}
+			)
+		return output_info
 
 
 class CreateClass(APIView):

@@ -18,8 +18,9 @@ from django.contrib import admin
 from .views import *
 urlpatterns = [
 	url(r'^bind?$',PersonBind.as_view()),
-	url(r'^class/all?$',AllClassInfo.as_view()),
-	url(r'^class/my?$',MyClassInfo.as_view()),
+	url(r'^class/all?$',AllClass.as_view()),
+	url(r'^class/my?$',MyClass.as_view()),
+	url(r'^class/info?$',ClassInfo.as_view()),
 	url(r'^info?$',PersonInfo.as_view()),
 	url(r'^class/create?$',CreateClass.as_view()),
 	url(r'^class/exit?$',ExitClass.as_view()),
