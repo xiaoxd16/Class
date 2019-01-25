@@ -107,7 +107,7 @@ class CreateClass(APIView):
 	def post(self):
 		self.check_input('open_id', 'name', 'token')
 		check_repeat = Class.selectByName(self.input['name'])
-		if len(check_repeat) == 0:
+		if len(check_repeat) != 0:
 			raise LogicError('Name in use, try another name please!')
 		person = Person.selectByOpenId(self.input['open_id'])
 		class_ = Class.insertClass(self.input['name'], self.input['token'])
