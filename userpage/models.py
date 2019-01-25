@@ -243,6 +243,11 @@ class Class(models.Model):
 			return None
 		return None
 	
+	@classmethod
+	def selectByName(cls,name):
+		class_ = cls.objects.filter(name=name)
+		return class_
+	
 	def insertPerson(self,person):
 		'''
 		:param person: can be both Object or Openid
