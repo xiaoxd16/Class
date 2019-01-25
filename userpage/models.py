@@ -205,9 +205,9 @@ class Class(models.Model):
 	members = models.ManyToManyField(Person)
 	
 	@classmethod
-	def insertClass(cls, name):
+	def insertClass(cls, name,token):
 		try:
-			class_ = cls(name=name)
+			class_ = cls(name=name,token=token)
 			class_.save()
 			return class_
 		except Exception as e:

@@ -105,12 +105,12 @@ class ClassInfo(APIView):
 
 class CreateClass(APIView):
 	def post(self):
-		self.check_input('open_id', 'name')
+		self.check_input('open_id', 'name', 'token')
 		person = Person.selectByOpenId(self.input['open_id'])
-		class_ = Class.insertClass(self.input['name'])
+		class_ = Class.insertClass(self.input['name'], self.input['token'])
 		if class_ is None:
 			raise LogicError("Failed to insert class!")
-		class_ = class_.insertPerson(id, person)
+		class_ = class_.insertPerson(person)
 		if class_ is None:
 			raise LogicError("Failed to insert person to class!")
 		return {
@@ -126,7 +126,10 @@ class ExitClass(APIView):
 		class_ = Class.selectById(self.input['id'])
 		if class_ is None:
 			raise LogicError("No Such Class")
-		class_ = class_.removePerson(self.input['open_id'])
+		person = Person.selectByOpenId(self.input['open_id'])
+		if person is None:
+			raise LogicError("No Such Person")
+		class_ = class_.removePerson(person)
 		if class_ is None:
 			raise LogicError("Remove Failed")
 		return
@@ -138,7 +141,10 @@ class InsertClass(APIView):
 		class_ = Class.selectById(self.input['id'])
 		if class_ is None:
 			raise LogicError("No Such Class!")
-		class_ = class_.insertPerson(self.input['open_id'])
+		person = Person.selectByOpenId(self.input['open_id'])
+		if person is None:
+			raise LogicError("No Such Person")
+		class_ = class_.insertPerson(person)
 		if class_ is None:
 			raise LogicError('Add To Class Failed!')
 
