@@ -58,8 +58,9 @@ class PersonInfo(APIView):
 
 class AllClass(APIView):
 	def get(self):
+		self.check_input('open_id')
 		output_list = []
-		all_class = Class.objects.all()
+		all_class = Class.objects.exclude(members__open_id=self.input['open_id'])
 		for i in all_class:
 			output_list.append(
 				{
