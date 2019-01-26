@@ -55,6 +55,60 @@ class PersonInfo(APIView):
 		if not t:
 			raise LogicError("Update Infomation Failed")
 
+class PhoneCreate(APIView):
+	def post(self):
+		self.check_input('open_id','phone')
+		person = Person.selectByOpenId(self.input['open_id'])
+		if person is None:
+			raise  LogicError("No Such Person")
+		check_repeat = Phone.objects.filter(phone=self.input['phone'],person=person)
+		if len(check_repeat):
+			raise LogicError("Already record this phone")
+		Phone.insertPhone(self.input['phone'],person)
+
+class EmailCreate(APIView):
+	def post(self):
+		self.check_input('open_id', 'email')
+		person = Person.selectByOpenId(self.input['open_id'])
+		if person is None:
+			raise LogicError("No Such Person")
+		check_repeat = Email.objects.filter(email=self.input['email'], person=person)
+		if len(check_repeat):
+			raise LogicError("Already record this email")
+		Email.insertEmail(self.input['email'], person)
+
+class PlaceCreate(APIView):
+	def post(self):
+		self.check_input('open_id', 'place')
+		person = Person.selectByOpenId(self.input['open_id'])
+		if person is None:
+			raise LogicError("No Such Person")
+		check_repeat = Place.objects.filter(place=self.input['place'], person=person)
+		if len(check_repeat):
+			raise LogicError("Already record this place")
+		Place.insertEmail(self.input['place'], person)
+
+class PhoneDelete(APIView):
+	def get(self):
+		self.check_input('id')
+		to_delete = Phone.selectPhoneById(self.input['id'])
+		if not to_delete:
+			raise LogicError("No Such Phone with this id")
+	
+class PlaceDelete(APIView):
+	def get(self):
+		self.check_input('id')
+		to_delete = Place.selectPlaceById(self.input['id'])
+		if not to_delete:
+			raise LogicError("No Such Place with this id")
+
+class EmailDelete(APIView):
+	def get(self):
+		self.check_input('id')
+		to_delete = Email.selectEmailById(self.input['id'])
+		if not to_delete:
+			raise LogicError('No Such Email with this id')
+
 
 class AllClass(APIView):
 	def get(self):
