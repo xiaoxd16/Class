@@ -86,7 +86,7 @@ class PlaceCreate(APIView):
 		check_repeat = Place.objects.filter(place=self.input['place'], person=person)
 		if len(check_repeat):
 			raise LogicError("Already record this place")
-		Place.insertEmail(self.input['place'], person)
+		Place.insertPlace(self.input['place'], person)
 
 class PhoneDelete(APIView):
 	def get(self):
