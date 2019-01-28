@@ -144,9 +144,9 @@ class MyClass(APIView):
 class ClassInfo(APIView):
 	def get(self):
 		self.check_input('id')
-		class_ = Class.selectById(self.input['id'])
+		members = Class.selectById(self.input['id']).members.all()
 		output_info = []
-		for i in class_.members:
+		for i in members:
 			output_info.append(
 				{
 					'id': i.id,
