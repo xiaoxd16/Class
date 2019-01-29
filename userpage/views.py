@@ -235,7 +235,7 @@ class OtherInfo(APIView):
 			raise LogicError('No Person With Such ID')
 		phones_data = Phone.selectPhoneByPerson(person)
 		places_data = Place.selectPlaceByPerson(person)
-		emails_data = Email.selectPlaceByPerson(person)
+		emails_data = Email.selectEmailByPerson(person)
 		
 		phones = {}
 		places = {}
