@@ -90,24 +90,38 @@ class PlaceCreate(APIView):
 
 class PhoneDelete(APIView):
 	def get(self):
-		self.check_input('id')
+		self.check_input('id','open_id')
+		person = Person.selectByOpenId(self.input['open_id'])
+		
 		to_delete = Phone.selectPhoneById(self.input['id'])
+		
 		if not to_delete:
 			raise LogicError("No Such Phone with this id")
+		if to_delete.person != person:
+			raise LogicError("Not Your Phone,Error Occur!")
+		to_delete.delete()
 	
 class PlaceDelete(APIView):
 	def get(self):
-		self.check_input('id')
+		self.check_input('id','open_id')
+		person = Person.selectByOpenId(self.input['open_id'])
 		to_delete = Place.selectPlaceById(self.input['id'])
 		if not to_delete:
 			raise LogicError("No Such Place with this id")
+		if to_delete.person != person:
+			raise LogicError("Not Your Address,Error Occur!")
+		to_delete.delete()
 
 class EmailDelete(APIView):
 	def get(self):
-		self.check_input('id')
+		self.check_input('id','open_id')
+		person = Person.selectByOpenId(self.input['open_id'])
 		to_delete = Email.selectEmailById(self.input['id'])
 		if not to_delete:
 			raise LogicError('No Such Email with this id')
+		if to_delete.person != person :
+			raise LogicError('Not Your Email,Error Occur!')
+		to_delete.delete()
 
 
 class AllClass(APIView):
